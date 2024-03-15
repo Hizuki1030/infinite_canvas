@@ -15,7 +15,7 @@ class Menus extends StatefulWidget {
     this.renameLabel,
     this.visible = true,
   });
-  
+
   final List<MenuEntry> menus;
   final InfiniteCanvasController controller;
   final String Function(String)? renameLabel;
@@ -194,6 +194,23 @@ class _MenusState extends State<Menus> {
             meta: true,
           ),
         ),
+        MenuEntry(
+            label: 'Group',
+            onPressed: () {
+              final nodes = widget.controller.selection;
+              final GroupKey = UniqueKey();
+              for (final node in nodes) {
+                node.groupKey = GroupKey;
+              }
+            }),
+        MenuEntry(
+            label: 'Ungroup',
+            onPressed: () {
+              final nodes = widget.controller.selection;
+              for (final node in nodes) {
+                node.groupKey = null;
+              }
+            }),
         MenuEntry(
           label: 'Delete',
           onPressed: () {

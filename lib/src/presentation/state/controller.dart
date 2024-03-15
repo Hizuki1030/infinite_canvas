@@ -259,12 +259,32 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
   }
 
   void setSelection(Set<Key> keys, [bool hover = false]) {
+    List<LocalKey> keysIncludeGroup = keys.whereType<LocalKey>().toList();
+    List<LocalKey> selectedGroupKeys = [];
+    for (final key in keys) {
+      for (final node in nodes) {
+        if (node.key == key) {
+          if (node.groupKey != null) {
+            selectedGroupKeys.add(node.groupKey!);
+          }
+        }
+      }
+    }
+    for (final selectedGroupKey in selectedGroupKeys) {
+      for (final node in nodes) {
+        if (node.groupKey == selectedGroupKey) {
+          node.allowResize = false;
+          keysIncludeGroup.add(node.key);
+        }
+      }
+    }
+
     if (hover) {
       _hovered.clear();
-      _hovered.addAll(keys);
+      _hovered.addAll(keysIncludeGroup);
     } else {
       _selected.clear();
-      _selected.addAll(keys);
+      _selected.addAll(keysIncludeGroup);
       _cacheSelectedOrigins();
     }
     notifyListeners();

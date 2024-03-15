@@ -17,12 +17,14 @@ class InfiniteCanvasNode<T> {
   String get id => key.toString();
 
   final LocalKey key;
+  LocalKey? groupKey;
+
   late Size size;
   late Offset offset;
   String? label;
   T? value;
   final Widget child;
-  final bool allowResize, allowMove;
+  bool allowResize, allowMove;
   final Clip clipBehavior;
   Rect get rect => offset & size;
   static const double dragHandleSize = 10;
