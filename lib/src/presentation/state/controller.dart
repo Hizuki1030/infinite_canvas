@@ -278,15 +278,26 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
         }
       }
     }
-
-    if (hover) {
-      _hovered.clear();
-      _hovered.addAll(keysIncludeGroup);
+    if (!_controlPressed) {
+      if (hover) {
+        _hovered.clear();
+        _hovered.addAll(keysIncludeGroup);
+      } else {
+        _selected.clear();
+        _selected.addAll(keysIncludeGroup);
+        _cacheSelectedOrigins();
+      }
     } else {
-      _selected.clear();
-      _selected.addAll(keysIncludeGroup);
-      _cacheSelectedOrigins();
+      if (hover) {
+        _hovered.clear();
+        _hovered.addAll(keys);
+      } else {
+        _selected.clear();
+        _selected.addAll(keys);
+        _cacheSelectedOrigins();
+      }
     }
+
     notifyListeners();
   }
 
