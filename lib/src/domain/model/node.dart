@@ -7,9 +7,11 @@ class InfiniteCanvasNode<T> {
     required this.size,
     required this.offset,
     required this.child,
+    this.rotate,
     this.label,
     this.allowResize = false,
     this.allowMove = true,
+    this.allowRotate = true,
     this.clipBehavior = Clip.none,
     this.value,
   });
@@ -21,10 +23,11 @@ class InfiniteCanvasNode<T> {
 
   late Size size;
   late Offset offset;
+  late int? rotate;
   String? label;
   T? value;
   final Widget child;
-  bool allowResize, allowMove;
+  bool allowResize, allowMove, allowRotate;
   final Clip clipBehavior;
   Rect get rect => offset & size;
   static const double dragHandleSize = 10;
@@ -34,8 +37,10 @@ class InfiniteCanvasNode<T> {
     Size? size,
     Offset? offset,
     String? label,
+    int? rotate,
   }) {
     if (offset != null && allowMove) this.offset = offset;
+    if (rotate != null && allowRotate) this.rotate = rotate;
     if (size != null && allowResize) {
       if (size.width < dragHandleSize * 2) {
         size = Size(dragHandleSize * 2, size.height);

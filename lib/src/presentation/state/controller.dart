@@ -2,7 +2,8 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-
+import 'package:random_color/random_color.dart';
+import 'package:infinite_canvas/infinite_canvas.dart';
 import '../../domain/model/edge.dart';
 import '../../domain/model/graph.dart';
 import '../../domain/model/node.dart';
@@ -227,6 +228,89 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
       label: label,
     );
     edges.add(edge);
+    notifyListeners();
+  }
+
+  void rotateSelection(int angle) {
+    if (_selected.isEmpty) return;
+
+    // 複数のオブジェクトの最大座標と最小座標を算出
+    double minX = double.infinity;
+    double minY = double.infinity;
+    double maxX = double.negativeInfinity;
+    double maxY = double.negativeInfinity;
+    for (final key in _selected) {
+      final node = nodes.firstWhereOrNull((e) => e.key == key);
+      if (node != null) {
+        minX = min(minX, node.offset.dx);
+        minY = min(minY, node.offset.dy);
+        maxX = max(maxX, node.offset.dx + node.size.width);
+        maxY = max(maxY, node.offset.dy + node.size.height);
+      }
+    }
+
+    // 中心点を算出
+    final center = Offset(minX, minY);
+
+    final color = RandomColor().randomColor();
+    final node = InfiniteCanvasNode(
+      key: UniqueKey(),
+      label: 'Center!!',
+      allowResize: true,
+      offset: center,
+      size: Size(
+        10,
+        10,
+      ),
+      child: Builder(
+        builder: (context) {
+          return CustomPaint(
+            painter: InlineCustomPainter(
+              brush: Paint()..color = color,
+              builder: (brush, canvas, rect) {
+                // Draw circle
+                final diameter = min(rect.width, rect.height).toDouble();
+
+                final radius = diameter / 2;
+                canvas.drawCircle(rect.center, radius, brush);
+              },
+            ),
+          );
+        },
+      ),
+    );
+    add(node);
+
+    // 中心を基準に各オブジェクトを回転
+    for (final key in _selected) {
+      final index = nodes.indexWhere((e) => e.key == key);
+      if (index == -1) continue;
+      final current = nodes[index];
+
+      // 回転前の中心位置との差分を計算
+      final diff = current.offset - center;
+
+      // 角度をラジアンに変換
+      final radians = angle * pi / 180;
+
+      // 回転後の差分を計算
+      final rotatedDiff = Offset(
+        diff.dx * cos(radians) - diff.dy * sin(radians),
+        diff.dx * sin(radians) + diff.dy * cos(radians),
+      );
+
+      // 新しい中心位置を計算
+      final newOffset = center + rotatedDiff;
+
+      // 新しい位置と角度を設
+      final newAngle = (current.rotate ?? 0) + angle;
+      current.update(offset: newOffset, rotate: newAngle);
+
+      if (_formatter != null) {
+        _formatter!(current);
+      }
+    }
+
     notifyListeners();
   }
 
@@ -456,5 +540,30 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
     final scale = matrix.getMaxScaleOnAxis();
     final size = constraints.biggest;
     return offset & size / scale;
+  }
+}
+
+class InlineCustomPainter extends CustomPainter {
+  const InlineCustomPainter({
+    required this.brush,
+    required this.builder,
+    this.isAntiAlias = true,
+  });
+  final Paint brush;
+  final bool isAntiAlias;
+  final void Function(Paint paint, Canvas canvas, Rect rect) builder;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    brush.isAntiAlias = isAntiAlias;
+    canvas.save();
+    builder(brush, canvas, rect);
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }

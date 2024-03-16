@@ -163,7 +163,7 @@ class _GeneratedNodesState extends State<GeneratedNodes> {
                     key: UniqueKey(),
                     label: 'Node ${controller.nodes.length}',
                     allowResize: true,
-                    offset: controller.mousePosition,
+                    offset: Offset(0, 0),
                     size: Size(
                       Random().nextDouble() * 200 + 100,
                       Random().nextDouble() * 200 + 100,
@@ -239,6 +239,12 @@ class _GeneratedNodesState extends State<GeneratedNodes> {
                       );
                     },
                   );
+                },
+              ),
+              MenuEntry(
+                label: 'Rotation',
+                onPressed: () {
+                  controller.rotateSelection(90);
                 },
               ),
             ],
