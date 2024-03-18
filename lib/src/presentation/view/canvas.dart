@@ -49,6 +49,7 @@ class InfiniteCanvasState extends State<InfiniteCanvas> {
     super.initState();
     controller.addListener(onUpdate);
     controller.focusNode.requestFocus();
+    controller.gridSize = widget.gridSize;
   }
 
   @override

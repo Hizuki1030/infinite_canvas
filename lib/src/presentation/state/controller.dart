@@ -29,6 +29,15 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
   final focusNode = FocusNode();
   Size? viewport;
 
+  Size? _gridSize;
+  // Public setter for grid size
+  set gridSize(Size value) {
+    if (value != _gridSize) {
+      _gridSize = value;
+      notifyListeners();
+    }
+  }
+
   @override
   final List<InfiniteCanvasNode> nodes = [];
 
@@ -179,6 +188,7 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
     for (final child in nodes) {
       final rect = child.rect;
       if (rect.contains(offset)) {
+        print(child.key);
         selection.add(child.key);
       }
     }
@@ -242,26 +252,31 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
     for (final key in _selected) {
       final node = nodes.firstWhereOrNull((e) => e.key == key);
       if (node != null) {
-        minX = min(minX, node.offset.dx);
-        minY = min(minY, node.offset.dy);
-        maxX = max(maxX, node.offset.dx + node.size.width);
-        maxY = max(maxY, node.offset.dy + node.size.height);
+        final rect = node.rect;
+        minX = min(minX, rect.left);
+        minY = min(minY, rect.top);
+        maxX = max(maxX, rect.right);
+        maxY = max(maxY, rect.bottom);
       }
     }
 
-    // 中心点を算出
-    final center = Offset(minX, minY);
+// 中心点を算出
+    final center = Offset(
+        (((minX + maxX) / 2) ~/ (_gridSize?.width ?? 1))
+            .toDouble(), // 切り捨てた後にdoubleにキャスト
+        (((minY + maxY) / 2) ~/ (_gridSize?.height ?? 1))
+            .toDouble() // 切り捨てた後にdoubleにキャスト
+        );
+
+    print(center);
 
     final color = RandomColor().randomColor();
     final node = InfiniteCanvasNode(
       key: UniqueKey(),
-      label: 'Center!!',
+      label: 'Node ${nodes.length}',
       allowResize: true,
       offset: center,
-      size: Size(
-        10,
-        10,
-      ),
+      size: Size(10, 10),
       child: Builder(
         builder: (context) {
           return CustomPaint(
@@ -269,8 +284,7 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
               brush: Paint()..color = color,
               builder: (brush, canvas, rect) {
                 // Draw circle
-                final diameter = min(rect.width, rect.height).toDouble();
-
+                final diameter = min(rect.width, rect.height);
                 final radius = diameter / 2;
                 canvas.drawCircle(rect.center, radius, brush);
               },
