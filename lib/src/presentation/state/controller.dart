@@ -253,6 +253,7 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
       final node = nodes.firstWhereOrNull((e) => e.key == key);
       if (node != null) {
         final rect = node.rect;
+        final offset = node.offset;
         minX = min(minX, rect.left);
         minY = min(minY, rect.top);
         maxX = max(maxX, rect.right);
@@ -262,38 +263,13 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
 
 // 中心点を算出
     final center = Offset(
-        (((minX + maxX) / 2) ~/ (_gridSize?.width ?? 1))
+        ((((minX + maxX) / 2) ~/ (_gridSize?.width ?? 1)) *
+                (_gridSize?.width ?? 1))
             .toDouble(), // 切り捨てた後にdoubleにキャスト
-        (((minY + maxY) / 2) ~/ (_gridSize?.height ?? 1))
+        ((((minY + maxY) / 2) ~/ (_gridSize?.height ?? 1)) *
+                (_gridSize?.height ?? 1))
             .toDouble() // 切り捨てた後にdoubleにキャスト
         );
-
-    print(center);
-
-    final color = RandomColor().randomColor();
-    final node = InfiniteCanvasNode(
-      key: UniqueKey(),
-      label: 'Node ${nodes.length}',
-      allowResize: true,
-      offset: center,
-      size: Size(10, 10),
-      child: Builder(
-        builder: (context) {
-          return CustomPaint(
-            painter: InlineCustomPainter(
-              brush: Paint()..color = color,
-              builder: (brush, canvas, rect) {
-                // Draw circle
-                final diameter = min(rect.width, rect.height);
-                final radius = diameter / 2;
-                canvas.drawCircle(rect.center, radius, brush);
-              },
-            ),
-          );
-        },
-      ),
-    );
-    add(node);
 
     // 中心を基準に各オブジェクトを回転
     for (final key in _selected) {

@@ -212,6 +212,16 @@ class _MenusState extends State<Menus> {
               }
             }),
         MenuEntry(
+          label: 'Rotation',
+          onPressed: () {
+            widget.controller.rotateSelection(90);
+          },
+          shortcut: const SingleActivator(
+            LogicalKeyboardKey.keyR,
+            shift: true,
+          ),
+        ),
+        MenuEntry(
           label: 'Delete',
           onPressed: () {
             confirm(

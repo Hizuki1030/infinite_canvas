@@ -241,12 +241,6 @@ class _GeneratedNodesState extends State<GeneratedNodes> {
                   );
                 },
               ),
-              MenuEntry(
-                label: 'Rotation',
-                onPressed: () {
-                  controller.rotateSelection(90);
-                },
-              ),
             ],
           ),
         ],
