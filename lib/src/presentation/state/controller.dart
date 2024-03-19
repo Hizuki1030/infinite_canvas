@@ -188,7 +188,6 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
     for (final child in nodes) {
       final rect = child.rect;
       if (rect.contains(offset)) {
-        print(child.key);
         selection.add(child.key);
       }
     }
