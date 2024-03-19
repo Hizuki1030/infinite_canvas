@@ -7,6 +7,7 @@ class InfiniteCanvasNode<T> {
     required this.size,
     required this.offset,
     required this.child,
+    this.attribute,
     this.rotate = 0,
     this.label,
     this.allowResize = false,
@@ -25,6 +26,7 @@ class InfiniteCanvasNode<T> {
   late Offset offset;
   late int rotate = 0;
   String? label;
+  String? attribute;
   T? value;
   final Widget child;
   bool allowResize, allowMove, allowRotate;
