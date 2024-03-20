@@ -293,7 +293,7 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
       current.update(offset: newOffset, rotate: newAngle);
 
       if (_formatter != null) {
-        _formatter!(current);
+        //_formatter!(current);
       }
     }
 
