@@ -7,6 +7,7 @@ class InfiniteCanvasNode<T> {
     required this.size,
     required this.offset,
     required this.child,
+    this.groupKey,
     this.attribute,
     this.rotate = 0,
     this.label,
