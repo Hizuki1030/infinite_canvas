@@ -261,9 +261,9 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
     }
 
 // 中心点を算出
-  final center = Offset(0,0);
+    Offset center = Offset(0,0);
     if (_gridSize != null) {
-      final center = Offset(
+      center = Offset(
           (((minX + maxX) / 2) / _gridSize!.width).roundToDouble() * _gridSize!.width,
           (((minY + maxY) / 2) / _gridSize!.height).roundToDouble() * _gridSize!.height);
     }
