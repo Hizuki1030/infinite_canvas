@@ -304,9 +304,14 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
   }
 
   void moveSelection(Offset position) {
-    final delta = mouseDragStart != null
+    Offset delta = mouseDragStart != null
         ? toLocal(position) - toLocal(mouseDragStart!)
         : toLocal(position);
+    if (_gridSize != null) {
+      delta = Offset(
+          (delta.dx / _gridSize!.width).roundToDouble() * _gridSize!.width,
+          (delta.dy / _gridSize!.height).roundToDouble() * _gridSize!.height);
+    }
     for (final key in _selected) {
       final index = nodes.indexWhere((e) => e.key == key);
       if (index == -1) continue;
