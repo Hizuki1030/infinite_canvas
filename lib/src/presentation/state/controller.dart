@@ -7,6 +7,7 @@ import 'package:infinite_canvas/infinite_canvas.dart';
 import '../../domain/model/edge.dart';
 import '../../domain/model/graph.dart';
 import '../../domain/model/node.dart';
+import 'dart:async';
 
 typedef NodeFormatter = void Function(InfiniteCanvasNode);
 
@@ -26,6 +27,9 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
 
   double minScale = 0.4;
   double maxScale = 4;
+
+  double zoomValue = 1;
+  double _beforeZoomValue = 0;
   final focusNode = FocusNode();
   Size? viewport;
 
@@ -261,11 +265,13 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
     }
 
 // 中心点を算出
-    Offset center = Offset(0,0);
+    Offset center = Offset(0, 0);
     if (_gridSize != null) {
       center = Offset(
-          (((minX + maxX) / 2) / _gridSize!.width).roundToDouble() * _gridSize!.width,
-          (((minY + maxY) / 2) / _gridSize!.height).roundToDouble() * _gridSize!.height);
+          (((minX + maxX) / 2) / _gridSize!.width).roundToDouble() *
+              _gridSize!.width,
+          (((minY + maxY) / 2) / _gridSize!.height).roundToDouble() *
+              _gridSize!.height);
     }
     // 中心を基準に各オブジェクトを回転
     for (final key in _selected) {
@@ -493,18 +499,31 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
     notifyListeners();
   }
 
+  Timer? _debounceTimer;
   void zoom(double delta) {
-    final matrix = transform.value.clone();
-    final local = toLocal(mousePosition);
-    matrix.translate(local.dx, local.dy);
-    matrix.scale(delta, delta);
-    matrix.translate(-local.dx, -local.dy);
-    transform.value = matrix;
-    notifyListeners();
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(Duration(milliseconds: 10), () {
+      zoomReset();
+      final matrix = transform.value.clone();
+      final local = toLocal(mousePosition);
+      matrix.translate(local.dx, local.dy);
+      matrix.scale(delta, delta);
+      matrix.translate(-local.dx, -local.dy);
+      transform.value = matrix;
+      notifyListeners();
+    });
   }
 
-  void zoomIn() => zoom(1.1);
-  void zoomOut() => zoom(0.9);
+  void zoomIn() {
+    zoomValue = zoomValue + 0.1;
+    zoom(zoomValue);
+  }
+
+  void zoomOut() {
+    zoomValue = zoomValue - 0.1;
+    zoom(zoomValue);
+  }
+
   void zoomReset() => transform.value = Matrix4.identity();
 
   void pan(Offset delta) {
