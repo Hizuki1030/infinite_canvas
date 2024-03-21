@@ -502,7 +502,7 @@ class InfiniteCanvasController extends ChangeNotifier implements Graph {
   Timer? _debounceTimer;
   void zoom(double delta) {
     _debounceTimer?.cancel();
-    _debounceTimer = Timer(Duration(milliseconds: 10), () {
+    _debounceTimer = Timer(Duration(milliseconds: 100), () {
       zoomReset();
       final matrix = transform.value.clone();
       final local = toLocal(mousePosition);
