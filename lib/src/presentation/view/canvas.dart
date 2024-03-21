@@ -239,7 +239,8 @@ class InfiniteCanvasState extends State<InfiniteCanvas> {
             controller.mouseDown = false;
           },
           onPointerHover: (details) {
-            controller.mousePosition = details.localPosition;
+            controller.mousePosition =
+                controller.toLocal(details.localPosition);
             controller.checkSelection(controller.mousePosition, true);
           },
           onPointerMove: (details) {
