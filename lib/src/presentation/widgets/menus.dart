@@ -189,10 +189,6 @@ class _MenusState extends State<Menus> {
                   });
                 }
               : null,
-          shortcut: const SingleActivator(
-            LogicalKeyboardKey.keyR,
-            meta: true,
-          ),
         ),
         MenuEntry(
             label: 'Group',
@@ -218,7 +214,6 @@ class _MenusState extends State<Menus> {
           },
           shortcut: const SingleActivator(
             LogicalKeyboardKey.keyR,
-            shift: true,
           ),
         ),
         MenuEntry(
