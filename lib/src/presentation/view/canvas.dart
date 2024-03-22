@@ -288,9 +288,9 @@ class InfiniteCanvasState extends State<InfiniteCanvas> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        Positioned.fill(
-                          child: buildBackground(context, quad),
-                        ),
+                        //Positioned.fill(
+                        //  child: buildBackground(context, quad),
+                        //),
                         Positioned.fill(
                           child: InfiniteCanvasEdgeRenderer(
                             controller: controller,
