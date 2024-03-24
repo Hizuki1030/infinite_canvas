@@ -212,9 +212,6 @@ class _MenusState extends State<Menus> {
           onPressed: () {
             widget.controller.rotateSelection(90);
           },
-          shortcut: const SingleActivator(
-            LogicalKeyboardKey.keyR,
-          ),
         ),
         MenuEntry(
           label: 'Delete',
