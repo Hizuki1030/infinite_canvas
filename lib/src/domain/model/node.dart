@@ -33,7 +33,7 @@ class InfiniteCanvasNode<T> {
   final Widget child;
   bool allowResize, allowMove, allowRotate;
   final Clip clipBehavior;
-  ic_attribute
+  IcAttribute? ic_attribute;
 
   static const double dragHandleSize = 10;
   static const double borderInset = 2;
