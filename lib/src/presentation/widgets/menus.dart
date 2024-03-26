@@ -191,23 +191,6 @@ class _MenusState extends State<Menus> {
               : null,
         ),
         MenuEntry(
-            label: 'Group',
-            onPressed: () {
-              final nodes = widget.controller.selection;
-              final GroupKey = UniqueKey();
-              for (final node in nodes) {
-                node.groupKey = GroupKey;
-              }
-            }),
-        MenuEntry(
-            label: 'Ungroup',
-            onPressed: () {
-              final nodes = widget.controller.selection;
-              for (final node in nodes) {
-                node.groupKey = null;
-              }
-            }),
-        MenuEntry(
           label: 'Rotation',
           onPressed: () {
             widget.controller.rotateSelection(90);

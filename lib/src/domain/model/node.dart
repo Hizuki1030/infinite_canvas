@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-
+import 'ic_attribute.dart';
 class InfiniteCanvasNode<T> {
   InfiniteCanvasNode({
     required this.key,
@@ -16,6 +16,7 @@ class InfiniteCanvasNode<T> {
     this.allowRotate = true,
     this.clipBehavior = Clip.none,
     this.value,
+    this.ic_attribute,
   });
 
   String get id => key.toString();
@@ -32,6 +33,7 @@ class InfiniteCanvasNode<T> {
   final Widget child;
   bool allowResize, allowMove, allowRotate;
   final Clip clipBehavior;
+  ic_attribute
 
   static const double dragHandleSize = 10;
   static const double borderInset = 2;
