@@ -50,7 +50,6 @@ class NodeRenderer extends StatelessWidget {
                   ),
                 ),
               ),
-            if (controller.isSelected(node.key) || controller.isHovered(node.key))
   Positioned(
     top: node.rect.top - node.offset.dy,
     left: node.rect.left - node.offset.dx,
