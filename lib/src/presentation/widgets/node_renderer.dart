@@ -55,7 +55,7 @@ class NodeRenderer extends StatelessWidget {
               Positioned(
                 top: -borderInset + node.dragRectOffset.dy,
                 left: -borderInset + node.dragRectOffset.dx,
-                right: -borderInset - node.dragRectOffset.dy,
+                right: -borderInset - node.dragRectOffset.dx,
                 bottom: -borderInset- node.dragRectOffset.dy,
                 child: IgnorePointer(
                   child: Container(
