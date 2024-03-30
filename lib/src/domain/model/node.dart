@@ -64,8 +64,8 @@ class InfiniteCanvasNode<T> {
   Rect _getRotatedRect() {
     Rect rotatedRect;
     Offset offsetRect;
-    offsetRect = offset;
-    //offsetRect = offset + dragRectOffset;
+    //offsetRect = offset;
+    offsetRect = offset + dragRectOffset;
     if (rotate % 360 == 0) rotate = 0;
     if (rotate == 0) {
       rotatedRect = offsetRect & size;
