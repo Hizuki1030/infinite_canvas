@@ -26,7 +26,7 @@ class InfiniteCanvasNode<T> {
 
   late Size size;
   late Offset offset;
-  late Offset dragOffset;
+  late Offset dragRectOffset;
   late int rotate = 0;
   String? label;
   String? attribute;
