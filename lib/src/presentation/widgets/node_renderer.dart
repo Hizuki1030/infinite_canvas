@@ -56,8 +56,8 @@ class NodeRenderer extends StatelessWidget {
                 top: 0,
                 left: 0,
                 child: Container(
-                  width: node.rect.width,
-                  height: node.rect.height,
+                  width: node.size.width,
+                  height: node.size.height,
                   decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.5),
                     border: Border.all(

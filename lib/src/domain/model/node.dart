@@ -40,7 +40,6 @@ class InfiniteCanvasNode<T> {
   static const double borderInset = 2;
 
   Rect get rect => _getRotatedRect();
-
   void update({
     Size? size,
     Offset? offset,
@@ -64,23 +63,24 @@ class InfiniteCanvasNode<T> {
   Rect _getRotatedRect() {
     Rect rotatedRect;
     Offset offsetRect;
-    //offsetRect = offset;
-    offsetRect = offset + dragRectOffset;
-    if (rotate % 360 == 0) rotate = 0;
-    if (rotate == 0) {
-      rotatedRect = offsetRect & size;
-    } else if (rotate % 270 == 0) {
-      rotatedRect = Offset(offsetRect.dx, offsetRect.dy - size.width) &
-          Size(size.height, size.width);
-    } else if (rotate % 180 == 0) {
-      rotatedRect = Offset(offsetRect.dx - size.width, offsetRect.dy - size.height) &
-          Size(size.width, size.height);
-    } else if (rotate % 90 == 0) {
-      rotatedRect = Offset(offsetRect.dx - size.height, offsetRect.dy) &
-          Size(size.height, size.width);
-    } else {
-      rotatedRect = offsetRect & size;
-    }
-    return rotatedRect;
-  }
+   //offsetRect = offset;
+   offsetRect = offset + dragRectOffset;
+   if (rotate % 360 == 0) rotate = 0;
+   if (rotate == 0) {
+     rotatedRect = offsetRect & size;
+   } else if (rotate % 270 == 0) {
+     rotatedRect = Offset(offsetRect.dx, offsetRect.dy - size.width) &
+         Size(size.height, size.width);
+   } else if (rotate % 180 == 0) {
+     rotatedRect = Offset(offsetRect.dx - size.width, offsetRect.dy - size.height) &
+         Size(size.width, size.height);
+   } else if (rotate % 90 == 0) {
+     rotatedRect = Offset(offsetRect.dx - size.height, offsetRect.dy) &
+         Size(size.height, size.width);
+   } else {
+     rotatedRect = offsetRect & size;
+   }
+
+   return rotatedRect;
+ }
 }
