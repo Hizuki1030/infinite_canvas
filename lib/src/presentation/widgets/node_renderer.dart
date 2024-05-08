@@ -53,10 +53,27 @@ class NodeRenderer extends StatelessWidget {
             if (controller.isSelected(node.key) ||
                 controller.isHovered(node.key))
               Positioned(
+                top: 0,
+                left: 0,
+                child: Container(
+                  width: node.rect.width,
+                  height: node.rect.height,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.5),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                ),
+              ),
+            if (controller.isSelected(node.key) ||
+                controller.isHovered(node.key))
+              Positioned(
                 top: -borderInset + node.dragRectOffset.dy,
                 left: -borderInset + node.dragRectOffset.dx,
                 right: -borderInset - node.dragRectOffset.dx,
-                bottom: -borderInset- node.dragRectOffset.dy,
+                bottom: -borderInset - node.dragRectOffset.dy,
                 child: IgnorePointer(
                   child: Container(
                     decoration: BoxDecoration(
