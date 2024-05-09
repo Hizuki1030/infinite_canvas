@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'ic_attribute.dart';
+
 class InfiniteCanvasNode<T> {
   InfiniteCanvasNode({
     required this.key,
@@ -26,7 +27,7 @@ class InfiniteCanvasNode<T> {
 
   late Size size;
   late Offset offset;
-  Offset dragRectOffset = Offset(0,0);
+  Offset dragRectOffset = Offset(0, 0);
   late int rotate = 0;
   String? label;
   String? attribute;
@@ -40,6 +41,7 @@ class InfiniteCanvasNode<T> {
   static const double borderInset = 2;
 
   Rect get rect => _getRotatedRect();
+
   void update({
     Size? size,
     Offset? offset,
@@ -61,26 +63,27 @@ class InfiniteCanvasNode<T> {
   }
 
   Rect _getRotatedRect() {
-    Rect rotatedRect;
-    Offset offsetRect;
-   //offsetRect = offset;
-   offsetRect = offset + dragRectOffset;
-   if (rotate % 360 == 0) rotate = 0;
-   if (rotate == 0) {
-     rotatedRect = offsetRect & size;
-   } else if (rotate % 270 == 0) {
-     rotatedRect = Offset(offsetRect.dx, offsetRect.dy - size.width) &
-         Size(size.height, size.width);
-   } else if (rotate % 180 == 0) {
-     rotatedRect = Offset(offsetRect.dx - size.width, offsetRect.dy - size.height) &
-         Size(size.width, size.height);
-   } else if (rotate % 90 == 0) {
-     rotatedRect = Offset(offsetRect.dx - size.height, offsetRect.dy) &
-         Size(size.height, size.width);
-   } else {
-     rotatedRect = offsetRect & size;
-   }
+    final double rad = rotate * math.pi / 180;
+    final Offset center = offset + Offset(size.width / 2, size.height / 2);
 
-   return rotatedRect;
- }
+    List<Offset> corners = [
+      Offset(-size.width / 2, -size.height / 2),
+      Offset(size.width / 2, -size.height / 2),
+      Offset(size.width / 2, size.height / 2),
+      Offset(-size.width / 2, size.height / 2),
+    ];
+
+    List<Offset> rotatedCorners = corners.map((corner) {
+      final double xNew = corner.dx * math.cos(rad) - corner.dy * math.sin(rad);
+      final double yNew = corner.dx * math.sin(rad) + corner.dy * math.cos(rad);
+      return center + Offset(xNew, yNew);
+    }).toList();
+
+    double minX = rotatedCorners.map((e) => e.dx).reduce(math.min);
+    double maxX = rotatedCorners.map((e) => e.dx).reduce(math.max);
+    double minY = rotatedCorners.map((e) => e.dy).reduce(math.min);
+    double maxY = rotatedCorners.map((e) => e.dy).reduce(math.max);
+
+    return Rect.fromLTRB(minX, minY, maxX, maxY);
+  }
 }

@@ -25,7 +25,7 @@ class NodeRenderer extends StatelessWidget {
     final fonts = Theme.of(context).textTheme;
     final showHandles = node.allowResize && controller.isSelected(node.key);
     return Transform.rotate(
-      alignment: Alignment.topLeft,
+      alignment: Alignment.center,
       angle: (node.rotate ?? 0) * math.pi / 180, // Convert degrees to radians
       child: SizedBox.fromSize(
         size: node.size,

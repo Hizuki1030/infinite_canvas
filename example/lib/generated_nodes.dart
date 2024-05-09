@@ -41,7 +41,7 @@ class _GeneratedNodesState extends State<GeneratedNodes> {
                   // Draw circle
                   final diameter = min(rect.width, rect.height);
                   final radius = diameter / 2;
-                  canvas.drawCircle(rect.center, radius, brush);
+                  canvas.drawCircle(Offset(-30,0), radius, brush);
                 },
               ),
             );
